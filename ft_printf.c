@@ -110,7 +110,7 @@ int ft_cast(const char c, va_list arg)
     if (c == 'u')
     {
         int current_arg = va_arg(arg, int);
-        len += ft_put_un_int(current_arg);
+        len += ft_put_un_int(current_arg); // mettre le va arg en 2e paramettre dans les fonctions
     }
     return (len);
 }
@@ -147,7 +147,7 @@ int main (void)
     char v = 'C';
     char *s = "HELLO";
     int n = 754;
-    unsigned int d = -17;
+    unsigned int d = -12;
     printf("salut %u toi\n", d);
     ft_printf("salut %u toi\n", d);
     return(0);
