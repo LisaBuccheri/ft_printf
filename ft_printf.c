@@ -9,84 +9,20 @@
 /*   Updated: 2021/09/30 15:09:19 by lbuccher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h>
-#include <unistd.h>
-#include <stdarg.h>
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
-
-int ft_nbrlen(int n)
-{
-	int i;
-
-	i = 0;
-    if (n < 0)
-    {
-        i++;
-        n *= -1;
-    }
-	while (n > 0)
-    {
-        n /= 10;
-        i++;
-    }
-    return (i);
-}
-
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
-int ft_putnbr(int n)
-{
-	if (n == -2147483648)
-		write(1, "-2147483648", 11);
-	else if (n < 0)
-	{
-		ft_putchar('-');
-		ft_putnbr(-n);
-	}
-	else
-	{
-		if (n > 9)
-		{
-			ft_putnbr(n / 10);
-			n %= 10;
-		}
-		ft_putchar(n + '0');
-	}
-    return (ft_nbrlen(n));
-}
-
-int ft_put_un_int(unsigned int n)
-{
-    if (n < 0)
-        write(1, "4294967295", 10);
-    if (n > 9)
-	{
-		ft_putnbr(n / 10);
-		n %= 10;
-	}
-	ft_putchar(n + '0');
-    return (ft_nbrlen(n));
-}
+// #include <stdio.h>
+// #include <unistd.h>
+// #include <stdarg.h>
+#include "ft_printf.h"
 
 int ft_cast(const char c, va_list arg)
 {
     int i;
     int len;
+    int nb;
 
     i = 0;
     len = 0;
+    nb = 0;
     if (c == 'c')
     {
         char current_arg = va_arg(arg, int);
@@ -96,6 +32,8 @@ int ft_cast(const char c, va_list arg)
     if (c == 's')
     {
         char *current_arg = va_arg(arg, char*);
+        if (!current_arg)
+            return (write(1, "(null)", 6));
         while(current_arg[i])
         {
             ft_putchar(current_arg[i++]);
@@ -105,12 +43,14 @@ int ft_cast(const char c, va_list arg)
     if (c == 'i' || c == 'd')
     {
         int current_arg = va_arg(arg, int);
-        len += ft_putnbr(current_arg);
+        len += ft_nbrlen(current_arg);
+        ft_putnbr(current_arg);
     }
     if (c == 'u')
     {
-        int current_arg = va_arg(arg, int);
-        len += ft_put_un_int(current_arg); // mettre le va arg en 2e paramettre dans les fonctions
+        unsigned int current_arg = va_arg(arg, int);
+        len += ft_un_int_len(current_arg);
+        ft_put_un_int(current_arg); // mettre le va arg en 2e paramettre dans les fonctions
     }
     return (len);
 }
@@ -131,24 +71,33 @@ int ft_printf(const char *str, ...)
             ft_putchar(str[i]);
             print_len++;
         }
-        if (str[i] == '%' && str[i+1] != '%' && str[i+1] != ' ')
+        else if (str[i] == '%' && str[i+1] != '%')
             print_len += ft_cast(str[++i], args);
         else if(str[i] == '%' && str[i+1] == '%')
+        {
             ft_putchar('%');
+            i++;
+            print_len++;
+        }
         i++;
     }
     va_end(args);
     return (print_len);
 }
 
-int main (void)
-{
-    char c = 'B';
-    char v = 'C';
-    char *s = "HELLO";
-    int n = 754;
-    unsigned int d = -12;
-    printf("salut %u toi\n", d);
-    ft_printf("salut %u toi\n", d);
-    return(0);
-}
+// int main (void)
+// {
+//     // char c = 'B';
+//     // char v = 'C';
+//     // char *s = "HELLO";
+//     // int n = 754;
+//     // unsigned int d = -12;
+//     printf("%d \n", printf(" %u ", -1));
+//     // printf("%d \n", printf(" %d \t", 0));
+//     // printf("%d \n", printf(" %d \t", 1));
+
+//     ft_printf("%d \n", ft_printf(" %u ", -1));
+//     // ft_printf("%d \n", ft_printf(" %d \t", 0));
+//     // ft_printf("%d \n", ft_printf(" %d \t", 1));
+//     return(0);
+// }

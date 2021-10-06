@@ -10,9 +10,9 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_printf.a
+NAME = libftprintf.a
 
-SRCS = ft_printf.c 
+SRCS = ft_printf.c ft_len.c ft_put.c
 
 OBJ = ${SRCS:.c=.o}
 
@@ -29,9 +29,6 @@ all: $(NAME)
 
 $(NAME):	${OBJ}
 	ar rc $(NAME) $(OBJ)
-
-bonus:		${OBJ}
-	ar rc $(NAME) $(OBJ) 
 
 clean:
 	rm -f $(OBJ)
