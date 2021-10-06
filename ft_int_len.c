@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_len.c                                           :+:      :+:    :+:   */
+/*   ft_int_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,39 +11,29 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-size_t	ft_strlen(const char *s)
+int    ft_nbrlen(int n)
 {
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
-
-int	ft_nbrlen(int n)
-{
-	int	i;
-
-	i = 0;
-	if (n == -2147483648)
-	{
-		i = 11;
-		return (i);
-	}
-	if (n == 0)
-		i++;
-	if (n < 0)
-	{
-		i++;
-		n *= -1;
-	}
-	while (n > 0)
-	{
-		n /= 10;
-		i++;
-	}
-	return (i);
+    int    i;
+    
+    i = 0;
+    if (n == -2147483648)
+    {
+        i = 11;
+        return (i);
+    }
+    if (n == 0)
+        i++;
+    if (n < 0)
+    {
+        i++;
+        n *= -1;
+    }
+    while (n > 0)
+    {
+        n /= 10;
+        i++;
+    }
+    return (i);
 }
 
 int	ft_un_int_len(unsigned int n)

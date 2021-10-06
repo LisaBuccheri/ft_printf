@@ -16,42 +16,21 @@
 
 int ft_cast(const char c, va_list arg)
 {
-    int i;
     int len;
     int nb;
 
-    i = 0;
     len = 0;
     nb = 0;
     if (c == 'c')
-    {
-        char current_arg = va_arg(arg, int);
-        ft_putchar(current_arg);
-        len++;
-    }
+        len += ft_print_c(len, va_arg(arg, int));
     if (c == 's')
-    {
-        char *current_arg = va_arg(arg, char*);
-        if (!current_arg)
-            return (write(1, "(null)", 6));
-        while(current_arg[i])
-        {
-            ft_putchar(current_arg[i++]);
-            len++;
-        }
-    }
+        len += ft_print_s(len, va_arg(arg, char*));
     if (c == 'i' || c == 'd')
-    {
-        int current_arg = va_arg(arg, int);
-        len += ft_nbrlen(current_arg);
-        ft_putnbr(current_arg);
-    }
+        len += ft_print_int(len, va_arg(arg, int));
     if (c == 'u')
-    {
-        unsigned int current_arg = va_arg(arg, int);
-        len += ft_un_int_len(current_arg);
-        ft_put_un_int(current_arg); // mettre le va arg en 2e paramettre dans les fonctions
-    }
+        len += ft_print_un_int(len, va_arg(arg, int));
+    if (c == 'x' || c == 'X')
+        len += ft_print_hexa(len, va_arg(arg, int));
     return (len);
 }
 
@@ -87,17 +66,19 @@ int ft_printf(const char *str, ...)
 
 // int main (void)
 // {
-//     // char c = 'B';
-//     // char v = 'C';
-//     // char *s = "HELLO";
-//     // int n = 754;
-//     // unsigned int d = -12;
-//     printf("%d \n", printf(" %u ", -1));
-//     // printf("%d \n", printf(" %d \t", 0));
-//     // printf("%d \n", printf(" %d \t", 1));
+//     int n = 285426;
+//     int resultMod = n % 16;
+//     int resultDiv = n / 16;
+    
+//     printf("%d\n", printf(" %x \n", n));
+//     ft_printf("%d\n", ft_printf(" %x \n", n));
+//     //printf("\n nb print: %d \n", printf(" %s", s));
+//     // printf("%d \n", printf(" %c \t", c));
+//     // printf("%d \n", printf(" %c \t", v));
 
-//     ft_printf("%d \n", ft_printf(" %u ", -1));
-//     // ft_printf("%d \n", ft_printf(" %d \t", 0));
-//     // ft_printf("%d \n", ft_printf(" %d \t", 1));
+//     // ft_printf("\n nb print: %d \n", ft_printf(" %s", s));
+//     // ft_printf("%d \n", ft_printf(" %c \t", c));
+//     // ft_printf("%d \n", ft_printf(" %c \t", v));
+//     // ft_printf("%d \n", ft_printf(" %% \t"));
 //     return(0);
 // }

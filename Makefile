@@ -12,7 +12,11 @@
 
 NAME = libftprintf.a
 
-SRCS = ft_printf.c ft_len.c ft_put.c
+SRCS = ft_printf.c \
+	ft_int_len.c \
+	ft_print_char.c \
+	ft_print_int.c \
+	ft_print_hexa.c
 
 OBJ = ${SRCS:.c=.o}
 
