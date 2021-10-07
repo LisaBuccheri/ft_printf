@@ -6,57 +6,83 @@
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/06 17:03:15 by lbuccher          #+#    #+#             */
-/*   Updated: 2021/10/06 18:02:32 by lbuccher         ###   ########.fr       */
+/*   Updated: 2021/10/07 14:32:08 by lbuccher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-int	ft_print_hexa(int len, int current_arg)
+int	ft_print_p(int len, void *current_arg)
 {
-	int	nb_letter;
+	unsigned long	arg;
 
-	nb_letter = 0;
-	nb_letter += ft_put_hexa(nb_letter, current_arg);
-	printf("\nnb :%d \n", nb_letter);
-	len += (ft_nbrlen(current_arg) - nb_letter);
+	arg = (unsigned long)current_arg;
+	write(1, "0x", 2);
+	len = ft_put_hexa_low(len, arg);
+	len += 2;
 	return (len);
 }
 
-int	ft_print_hexa_letter(int n)
+int	ft_print_hexa(char c, int len, unsigned int current_arg)
 {
+	if (c == 'x')
+		len = ft_put_hexa_low(len, current_arg);
+	else if (c == 'X')
+		len = ft_put_hexa_upp(len, current_arg);
+	return (len);
+}
+
+int	ft_put_hexa_upp(int nb_len, unsigned int n)
+{
+	nb_len++;
+	if (n > 9 && n < 16)
+	{
+		if (n == 10)
+			ft_putchar('A');
+		else if (n == 11)
+			ft_putchar('B');
+		else if (n == 12)
+			ft_putchar('C');
+		else if (n == 13)
+			ft_putchar('D');
+		else if (n == 14)
+			ft_putchar('E');
+		else if (n == 15)
+			ft_putchar('F');
+	}
+	else if (n > 9)
+	{
+		nb_len = ft_put_hexa_upp(nb_len, n / 16);
+		ft_put_hexa_upp(nb_len, n %= 16);
+	}
+	else
+		ft_putchar(n + '0');
+	return (nb_len);
+}
+
+int	ft_put_hexa_low(int nb_len, unsigned long n)
+{
+	nb_len++;
 	if (n > 9 && n < 16)
 	{
 		if (n == 10)
 			ft_putchar('a');
-		if (n == 11)
-			ft_putchar('b');		
-		if (n == 12)
+		else if (n == 11)
+			ft_putchar('b');
+		else if (n == 12)
 			ft_putchar('c');
-		if (n == 13)
+		else if (n == 13)
 			ft_putchar('d');
-		if (n == 14)
+		else if (n == 14)
 			ft_putchar('e');
-		if (n == 15)
+		else if (n == 15)
 			ft_putchar('f');
-		return (1);
 	}
-	return (0);
-}
-// reussir a incrementer une variable pour trouver le nombre de char imprimer
-int	ft_put_hexa(int nb_let, int n)
-{
-	if (n > 9)
+	else if (n > 9)
 	{
-		ft_put_hexa(nb_let, n / 16);
-		n %= 16;
-		if (ft_print_hexa_letter(n))
-		{
-			nb_let += 1;
-			return (++nb_let);
-		}
+		nb_len = ft_put_hexa_low(nb_len, n / 16);
+		ft_put_hexa_low(nb_len, n % 16);
 	}
-	if (n == 0)
-		return (++nb_let);
-	ft_putchar(n + '0');
-	return (++nb_let);
+	else
+		ft_putchar(n + '0');
+	return (nb_len);
 }
